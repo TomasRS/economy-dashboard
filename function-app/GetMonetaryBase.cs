@@ -10,9 +10,9 @@ using System.Net.Http;
 
 namespace FunctionApp
 {
-    public static class GetUsdValues
+    public static class GetMonetaryBase
     {
-        [FunctionName("GetUsdValues")]
+        [FunctionName("GetMonetaryBase")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IActionResult> Run(
@@ -46,7 +46,7 @@ namespace FunctionApp
             }
             catch (Exception)
             {
-                return new NotFoundResult();
+                return new BadRequestResult();
             }
         }
     }
