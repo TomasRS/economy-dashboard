@@ -1,47 +1,39 @@
 <!--Card-->
-<mdb-card cascade="true">
-
-    <!--Card image-->
-    <div class="view view-cascade overlay waves-light" mdbWavesEffect>
-      <mdb-card-img src="https://mdbootstrap.com/img/Photos/Others/men.jpg"></mdb-card-img>
-      <a>
+<mdb-card cascade="true" class="margin-base">
+  <!--Card image-->
+  <div class="view view-cascade overlay waves-light">
+    <mdb-card-img [src]="imagePath"></mdb-card-img>
+    <!-- <a>
         <div class="mask rgba-white-slight"></div>
-      </a>
+      </a> -->
+  </div>
+  <!--/Card image-->
+
+  <mdb-card-body cascade="true" class="text-center pb-0 px-0">
+    <!--Card content-->
+    <h4 class="card-title">
+      <strong>{{ title }}</strong>
+    </h4>
+    <div class="row">
+      <div class="col-md-6">
+        <h5>Compra</h5>
+        <mdb-card-text>
+          {{ buyValue }}
+        </mdb-card-text>
+      </div>
+      <div class="col-md-6">
+        <h5>Venta</h5>
+        <mdb-card-text>
+          {{ sellValue }}
+        </mdb-card-text>
+      </div>
     </div>
-    <!--/Card image-->
 
-    <mdb-card-body cascade="true" class="text-center pb-0 px-0">
-      <!--Card content-->
-      <h4 class="card-title">
-        <strong>Dolar oficial</strong>
-      </h4>
-      <div class="row">
-        <div class="col-md-6">
-          <h5>Compra</h5>
-          <mdb-card-text>
-            $68
-          </mdb-card-text>
-        </div>
-        <div class="col-md-6">
-          <h5>Venta</h5>
-          <mdb-card-text>
-            $72
-          </mdb-card-text>
-        </div>
-      </div>
-
-      <a type="button" mdbBtn floating="true" size="sm" color="dribbble" class="waves-light" mdbWavesEffect>
-        <mdb-icon fas icon="sync"></mdb-icon>
-      </a>
-      
-
-      <!-- Card footer -->
-      <div class="card-footer text-muted text-center mt-4">
-        Actualizado: 23/6/2020
-      </div>
-
-    </mdb-card-body>
-    <!--/.Card content-->
-
-  </mdb-card>
-  <!--/.Card-->
+    <!-- Card footer -->
+    <div class="card-footer text-muted text-center mt-4">
+      Actualizado: 23/6/2020
+    </div>
+  </mdb-card-body>
+  <!--/.Card content-->
+</mdb-card>
+<!--/.Card-->
