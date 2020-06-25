@@ -6,6 +6,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
+using Newtonsoft.Json;
 using FunctionApp.Models;
 
 namespace FunctionApp
@@ -33,9 +34,9 @@ namespace FunctionApp
                 {
                     //Read response content
                     var result = response.Content.ReadAsStringAsync().Result;
+                    var apiResponse = CentralBankObjectResponse.DeserializeJson(result);
 
-                    //Return
-                    return new OkObjectResult(CentralBankObject.DeserializedJson(result));
+                    return new OkObjectResult(apiResponse);
                 }
                 else
                 {
