@@ -6,6 +6,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
+using FunctionApp.Models;
 
 namespace FunctionApp
 {
@@ -34,7 +35,7 @@ namespace FunctionApp
                     var result = response.Content.ReadAsStringAsync().Result;
 
                     //Return
-                    return new OkObjectResult("Ok");
+                    return new OkObjectResult(CentralBankObject.DeserializedJson(result));
                 }
                 else
                 {
