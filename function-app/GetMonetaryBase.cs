@@ -5,7 +5,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using FunctionApp.Utils;
 using System.Net.Http;
 
 namespace FunctionApp
@@ -16,7 +15,7 @@ namespace FunctionApp
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "usds")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "monetarybase")] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -24,7 +23,8 @@ namespace FunctionApp
             try
             {
                 HttpClient newClient = new HttpClient();
-                HttpRequestMessage newRequest = new HttpRequestMessage(HttpMethod.Get, Environment.GetEnvironmentVariable("DolarSiEndpoint"));
+                HttpRequestMessage newRequest = new HttpRequestMessage(HttpMethod.Get, Environment.GetEnvironmentVariable("CentralBankMonetaryBaseEndpoint"));
+                newRequest.Headers.Add("Authorization", $"Bearer {Environment.GetEnvironmentVariable("CentralBankBcraToken")}");
 
                 //Read Server Response
                 HttpResponseMessage response = await newClient.SendAsync(newRequest);
@@ -33,11 +33,8 @@ namespace FunctionApp
                     //Read response content
                     var result = response.Content.ReadAsStringAsync().Result;
 
-                    //Need to deserialize manually because JSON response from previous call does not have property name in order to use a mapper.
-                    var dollarTypes = Helper.Deserialize(result);
-                
                     //Return
-                    return new OkObjectResult(dollarTypes);
+                    return new OkObjectResult("Ok");
                 }
                 else
                 {
