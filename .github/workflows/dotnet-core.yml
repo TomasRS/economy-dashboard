@@ -21,8 +21,11 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
+      working-directory: ./function-app
       run: dotnet restore
     - name: Build
+      working-directory: ./function-app
       run: dotnet build --configuration Release --no-restore
     - name: Test
+      working-directory: ./function-app
       run: dotnet test --no-restore --verbosity normal
