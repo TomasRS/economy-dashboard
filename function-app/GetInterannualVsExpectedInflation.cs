@@ -13,20 +13,20 @@ using FunctionApp.Exceptions;
 
 namespace FunctionApp
 {
-    public static class GetCashInFinancialEntities
+    public static class GetInterannualVsExpectedInflation
     {
-        [FunctionName("GetCashInFinancialEntities")]
+        [FunctionName("GetInterannualVsExpectedInflation")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "currency/cashinfinancialentities")] HttpRequest req, ILogger log)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "inflation/interannualvsexpected")] HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             try
             {
                 var httpClientService = new HttpClientService();
-                var result = await httpClientService.SendAsync(HttpMethod.Get, Environment.GetEnvironmentVariable("CentralBankCashInFinancialEntitiesEndpoint"), true, Environment.GetEnvironmentVariable("CentralBankBcraToken"));
+                var result = await httpClientService.SendAsync(HttpMethod.Get, Environment.GetEnvironmentVariable("CentralBankInterannualVsExpectedInflationEndpoint"), true, Environment.GetEnvironmentVariable("CentralBankBcraToken"));
 
                 var currencyCirculationList = CentralBankObjectResponse.DeserializeJson(result);
 
