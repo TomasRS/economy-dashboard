@@ -6,19 +6,20 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
+using Newtonsoft.Json;
 using FunctionApp.Models;
-using FunctionApp.Exceptions;
 using FunctionApp.Services;
+using FunctionApp.Exceptions;
 
 namespace FunctionApp
 {
-    public static class GetMonetaryBase
+    public static class GetCurrencyCirculation
     {
-        [FunctionName("GetMonetaryBase")]
+        [FunctionName("GetCurrencyCirculation")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "MonetaryBase")] HttpRequest req, ILogger log)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "CurrencyCirculation")] HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
