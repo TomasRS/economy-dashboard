@@ -5,30 +5,30 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using FunctionApp.Utils;
 using System.Net.Http;
+using Newtonsoft.Json;
+using FunctionApp.Models;
 using FunctionApp.Services;
 using FunctionApp.Exceptions;
 
 namespace FunctionApp
 {
-    public static class GetUsdValues
+    public static class GetCashInFinancialEntities
     {
-        [FunctionName("GetUsdValues")]
+        [FunctionName("GetCashInFinancialEntities")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Usds")] HttpRequest req,
-            ILogger log)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "CashInFinancialEntities")] HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             try
             {
                 var httpClientService = new HttpClientService();
-                var result = await httpClientService.SendAsync(HttpMethod.Get, Environment.GetEnvironmentVariable("DolarSiEndpoint"));
+                var result = await httpClientService.SendAsync(HttpMethod.Get, Environment.GetEnvironmentVariable("CentralBankCashInFinancialEntitiesEndpoint"), true, Environment.GetEnvironmentVariable("CentralBankBcraToken"));
 
-                var currencyCirculationList = Helper.Deserialize(result);
+                var currencyCirculationList = CentralBankObjectResponse.DeserializeJson(result);
 
                 return new OkObjectResult(currencyCirculationList);
             }
