@@ -74,7 +74,7 @@ jobs:
         working-directory: ./webapp
         run: |
           npm i
-          npm run build:prod
+          npm run build --prod
       - name: Push Build to Releases
         uses: ncipollo/release-action@v1
         with:
