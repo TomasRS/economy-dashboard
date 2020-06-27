@@ -20,34 +20,6 @@ env:
 
 
 jobs:
-# Build DotNet project  
-  build-dotnet:
-    strategy:
-      matrix:
-        agent: ['windows-latest','ubuntu-latest','macos-latest']
-      
-    runs-on: ${{matrix.agent}}
-
-    steps:
-    - name: 'Checkout GitHub Action'
-      uses: actions/checkout@master
-      
-    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-    - name: Install dependencies
-      working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-      run: dotnet restore
-    - name: Build
-      shell: pwsh
-      run: |
-        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-        dotnet build --configuration Release --output ./output
-        popd
-    - name: Test
-      working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-      run: dotnet test --no-restore --verbosity normal
 
 # Build Angular webapp, it runs in parallel from previous build
   build-angular-webapp:
@@ -76,15 +48,28 @@ jobs:
           npm i
           npm run build --prod
 
-# Deploy . Need dotnet build and angular webapp build to succeed in order to run.  
-  deploy-azure-functions:
-    needs: [build-dotnet, build-angular-webapp]
+# Build and deploy Azure Functions to Azure
+  build-and-deploy:
     runs-on: windows-latest
     steps:
-      - name: 'Run Azure Functions Action'
-        uses: Azure/functions-action@v1
-        id: fa
-        with:
-          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@master
+
+    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: 'Resolve Project Dependencies Using Dotnet'
+      shell: pwsh
+      run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        dotnet build --configuration Release --output ./output
+        popd
+    - name: 'Run Azure Functions Action'
+      uses: Azure/functions-action@v1
+      id: fa
+      with:
+        app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
