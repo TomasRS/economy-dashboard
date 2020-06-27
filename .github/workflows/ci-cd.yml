@@ -1,0 +1,94 @@
+name: CI/CD to Azure
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# CONFIGURATION
+# For help, go to https://github.com/Azure/Actions
+#
+# 1. Set up the following secrets in your repository:
+#   AZURE_FUNCTIONAPP_PUBLISH_PROFILE
+#
+# 2. Change these variables for your configuration:
+env:
+  AZURE_FUNCTIONAPP_NAME: dashboardsargentina         # set this to your application's name
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './function-app'    # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '3.1.101'                               # set this to the dotnet version to use
+
+
+jobs:
+# Build DotNet project  
+  build-dotnet:
+    strategy:
+      matrix:
+        agent: ['windows-latest','ubuntu-latest','macos-latest']
+      
+    runs-on: ${{matrix.agent}}
+
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@master
+      
+    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+    - name: Install dependencies
+      working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+      run: dotnet restore
+    - name: Build
+      shell: pwsh
+      run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        dotnet build --configuration Release --output ./output
+        popd
+    - name: Test
+      working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+      run: dotnet test --no-restore --verbosity normal
+
+# Build Angular webapp, it runs in parallel from previous build
+  build-angular-webapp:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install and npm run build
+        run: |
+          npm i
+          npm run build:prod
+      - name: Push Build to Releases
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "dist/angular-githubaction/*"
+          token: ${{ secrets.TOKEN_ANGULAR_ACTION }}
+
+# Deploy . Need dotnet build and angular webapp build to succeed in order to run.  
+  deploy-azure-functions:
+    needs: [build-dotnet, build-angular-webapp]
+    runs-on: windows-latest
+    steps:
+      - name: 'Run Azure Functions Action'
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
