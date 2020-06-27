@@ -18,7 +18,7 @@ namespace FunctionApp.Utils
             return list.ToList().ElementAt(firstListIndex).ElementAt(secondListIndex).Replace("\"", "");
         }
 
-        public static DollarTypes Deserialize(string result)
+        public static DollarType[] Deserialize(string result)
         {
                 List<List<string>> listOfValues = new List<List<string>>();
                 foreach(var item in result.Split(':'))
@@ -56,7 +56,7 @@ namespace FunctionApp.Utils
                 });
                 #endregion
 
-                return dollarTypes;
+                return dollarTypes.DollarValues.ToArray();
         }
     }
 }
