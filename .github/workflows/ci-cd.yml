@@ -16,13 +16,14 @@ on:
 env:
   AZURE_FUNCTIONAPP_NAME: dashboardsargentina         # set this to your application's name
   AZURE_FUNCTIONAPP_PACKAGE_PATH: './function-app'    # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '3.1.101'                               # set this to the dotnet version to use
+  DOTNET_VERSION: '3.1.101'                           # set this to the dotnet version to use
 
 
 jobs:
 
 # Build Angular webapp, it runs in parallel from previous build
   build-angular-webapp:
+    name: Build Angular app
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -50,6 +51,8 @@ jobs:
 
 # Build and deploy Azure Functions to Azure
   build-and-deploy:
+    name: Build .NET project & deploy Azure Functions
+    needs: build-angular-webapp
     runs-on: windows-latest
     steps:
     - name: 'Checkout GitHub Action'
