@@ -3,16 +3,18 @@ import { NgModule } from '@angular/core';
 import { MDBBootstrapModule} from 'angular-bootstrap-md';
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
 import { CardComponent } from './card/card.component';
 import { BodyComponent } from './body/body.component';
+import { NavigationComponent } from './navigation/navigation.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
+    NavigationComponent,
     CardComponent,
-    BodyComponent
+    BodyComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
