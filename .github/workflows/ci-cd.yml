@@ -75,11 +75,6 @@ jobs:
         run: |
           npm i
           npm run build --prod
-      - name: Push Build to Releases
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "dist/angular-githubaction/*"
-          token: ${{ secrets.TOKEN_ANGULAR_ACTION }}
 
 # Deploy . Need dotnet build and angular webapp build to succeed in order to run.  
   deploy-azure-functions:
