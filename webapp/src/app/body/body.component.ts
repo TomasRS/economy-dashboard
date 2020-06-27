@@ -6,7 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./body.component.scss']
 })
 export class BodyComponent implements OnInit {
-  
+
+  public lineChart: string = 'line';
+  public lineChartDataset: Array<any> = [
+    {data: [50, 40, 60, 51, 56, 55, 40], label:'Prueba'}
+  ];
+  public lineChartLabels: Array<any> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
+  public lineChartColors: Array<any> = []
+
+  public lineChartOptions: any = {
+    responsive: true
+  };
+
   constructor() { }
 
   ngOnInit(): void {

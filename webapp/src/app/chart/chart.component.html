@@ -1,0 +1,19 @@
+<!--Card-->
+      <mdb-card class="margin-base">
+
+          <!-- Card header -->
+          <div class="card-header">{{chartName}}</div>
+
+          <!--Card content-->
+          <mdb-card-body>
+
+              <div style="display: block">
+                  <canvas mdbChart [chartType]="chartType" [datasets]="chartDataset" [labels]="chartLabels"
+                          [colors]="chartColors" [options]="chartOptions"
+                          [legend]="true">
+                  </canvas>
+              </div>
+          </mdb-card-body>
+
+      </mdb-card>
+      <!--/.Card-->
