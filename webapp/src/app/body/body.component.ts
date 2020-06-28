@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DollarType } from '../DollarType';
+import { DollarType } from '../dollartype.model';
 
 @Component({
   selector: 'app-body',
