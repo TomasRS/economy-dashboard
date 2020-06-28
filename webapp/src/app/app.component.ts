@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from './data.service';
-import { DollarType} from './DollarType';
+import { DollarType} from './dollartype.model';
 
 @Component({
   selector: 'app-root',
