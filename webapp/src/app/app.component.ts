@@ -1,24 +1,25 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { DollarType } from './DollarType';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from './data.service';
+import { DollarType} from './DollarType';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  private readonly ROOT_URL="https://dashboardsargentina.azurewebsites.net/api";
+export class AppComponent implements OnInit {
 
+  usds: DollarType[];
   title = 'webapp';
-  dollarValues: Observable<DollarType[]>;
 
-  constructor(private http: HttpClient){
-    this.getDollarValues();
+  constructor(private dataService: DataService){
+  
   }
 
-  getDollarValues(){
-    this.dollarValues = this.http.get<DollarType[]>(this.ROOT_URL + '/currency/usds' );
+  ngOnInit(){
+    this.dataService.getUsdValues().subscribe((data: any[])=>{
+      this.usds = data;
+    })
   }
+
 }

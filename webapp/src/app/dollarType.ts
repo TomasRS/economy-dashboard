@@ -1,5 +1,5 @@
 export interface DollarType{
     name: string;
-    buyVallue: string;
+    buyValue: string;
     sellValue: string;
 }

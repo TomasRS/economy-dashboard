@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { DollarType } from '../DollarType';
 
 @Component({
   selector: 'app-body',
@@ -7,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BodyComponent implements OnInit {
 
+  @Input() usds: DollarType[];
+  
   public lineChart: string = 'line';
   public lineChartDataset: Array<any> = [
     {data: [50, 40, 60, 51, 56, 55, 40], label:'Prueba'}
