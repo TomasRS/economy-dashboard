@@ -12,6 +12,6 @@ export class DataService {
   constructor(private httpClient: HttpClient) { }
 
   public getUsdValues(){
-    return this.httpClient.get(this.LOCALHOST + '/currency/usds')
+    return this.httpClient.get(this.ROOT_URL + '/currency/usds')
   }
 }

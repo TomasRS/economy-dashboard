@@ -7,8 +7,8 @@ import { Component, Input } from '@angular/core';
 })
 export class CardComponent {
   @Input() title: string;
-  @Input() buyValue: number;
-  @Input() sellValue: number;
+  @Input() buyValue: string;
+  @Input() sellValue: string;
   @Input() imagePath: string;
 
   constructor() { }

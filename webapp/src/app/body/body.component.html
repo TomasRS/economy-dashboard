@@ -1,35 +1,11 @@
 <div class="padding-body">
   <div class="row wow fadeIn">
-    <div class="col-md-3">
+    <div class="col-md-3" *ngFor="let usd of usds">
       <app-card
-        [title]="usds[0].name"
-        [buyValue]="'$'+usds[0].buyValue"
-        [sellValue]="'$'+usds[0].sellValue"
-        [imagePath]="'../../assets/100_dolar_bill_compressed.jpg'"
-      ></app-card>
-    </div>
-    <div class="col-md-3">
-      <app-card
-        [title]="usds[1].name"
-        [buyValue]="'$'+usds[1].buyValue"
-        [sellValue]="'$'+usds[1].sellValue"
-        [imagePath]="'../../assets/100_dolar_blue_bill_compressed.jpg'"
-      ></app-card>
-    </div>
-    <div class="col-md-3">
-      <app-card
-        [title]="usds[2].name"
-        [buyValue]="'$'+usds[2].buyValue"
-        [sellValue]="'$'+usds[2].sellValue"
-        [imagePath]="'../../assets/100_dolar_ccl_bill_compressed.jpg'"
-      ></app-card>
-    </div>
-    <div class="col-md-3">
-      <app-card
-        [title]="usds[3].name"
-        [buyValue]="'$'+usds[3].buyValue"
-        [sellValue]="'$'+usds[3].sellValue"
-        [imagePath]="'../../assets/100_dolar_ccl_bill_compressed.jpg'"
+        [title]="usd.name"
+        [buyValue]="usd.buyValue"
+        [sellValue]="usd.sellValue"
+        [imagePath]="usd.imagePath"
       ></app-card>
     </div>
   </div>
