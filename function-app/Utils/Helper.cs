@@ -8,9 +8,10 @@ namespace FunctionApp.Utils
     {
         public static string BuildNumber(IEnumerable<IEnumerable<string>> list, int firstListIndex, int secondListFirstIndex, int secondListSecondIndex)
         {
-            return list.ToList().ElementAt(firstListIndex).ElementAt(secondListFirstIndex).Replace("\"", "") +
-                    ',' +
-                    list.ElementAt(firstListIndex).ElementAt(secondListSecondIndex).Replace("\"", "");
+            var firstNumber = list.ToList().ElementAt(firstListIndex).ElementAt(secondListFirstIndex).Replace("\"", "");
+            var secondNumber = list.ElementAt(firstListIndex).ElementAt(secondListSecondIndex).Replace("\"", "");
+
+            return  firstNumber + ',' + secondNumber.Remove(secondNumber.Length - 1);
         }
 
         public static string BuildName(IEnumerable<IEnumerable<string>> list, int firstListIndex, int secondListIndex)
