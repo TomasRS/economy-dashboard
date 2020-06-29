@@ -14,4 +14,8 @@ export class DataService {
   public getUsdValues(){
     return this.httpClient.get(this.ROOT_URL + '/currency/usds')
   }
+
+  public getAnnualExpectedInflation(){
+    return this.httpClient.get(this.ROOT_URL + '/inflation/annualexpected');
+  }
 }

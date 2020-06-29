@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { DollarType } from '../dollartype.model';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { DollarType } from '../models/dollartype.model';
+import { CentralBank } from '../models/centralbank.model';
 
 @Component({
   selector: 'app-body',
@@ -8,14 +9,18 @@ import { DollarType } from '../dollartype.model';
 })
 export class BodyComponent implements OnInit {
 
+  public annualExpectedInflationValues: string[] = [];
+  public annualExpectedInflationDates: string[] = [];
+
   @Input() usds: DollarType[];
+  @Input() annualExpectedInflations: CentralBank[];
   
   public lineChart: string = 'line';
-  public lineChartDataset: Array<any> = [
-    {data: [50, 40, 60, 51, 56, 55, 40], label:'Prueba'}
-  ];
-  public lineChartLabels: Array<any> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
-  public lineChartColors: Array<any> = []
+
+  public expectedVsInterannualInflationDataset: Array<any> = [];
+
+  public expectedVsInterannualInflationLabels: Array<any> = this.annualExpectedInflationDates;
+  public lineChartColors: Array<any> = [];
 
   public lineChartOptions: any = {
     responsive: true
@@ -26,4 +31,14 @@ export class BodyComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    this.annualExpectedInflationValues = changes.annualExpectedInflations.currentValue.map(dateValue => dateValue.value);
+    this.annualExpectedInflationDates = changes.annualExpectedInflations.currentValue.map(dateValue => dateValue.date);
+    
+    this.expectedVsInterannualInflationDataset = [
+    {data: this.annualExpectedInflationValues, label:'Inflacion anual esperada'},
+    {data: this.annualExpectedInflationValues, label:'Inflacion interanual'}];
+
+    this.expectedVsInterannualInflationLabels = this.annualExpectedInflationDates;
+  }
 }

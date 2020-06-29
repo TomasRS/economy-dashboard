@@ -16,8 +16,8 @@
       <app-chart
         chartType="line"
         chartName="Inflacion anual esperada vs interanual (en %)"
-        [chartDataset]="lineChartDataset"
-        [chartLabels]="lineChartLabels"
+        [chartDataset]="expectedVsInterannualInflationDataset"
+        [chartLabels]="expectedVsInterannualInflationLabels"
         [chartColors]="lineChartColors"
         [chartOptions]="lineChartOptions"
       ></app-chart>
@@ -28,8 +28,8 @@
       <app-chart
         chartType="bar"
         chartName="Diferencia entre inflacion interanual y anual esperada (en %)"
-        [chartDataset]="lineChartDataset"
-        [chartLabels]="lineChartLabels"
+        [chartDataset]="[]"
+        [chartLabels]="[]"
         [chartColors]="lineChartColors"
         [chartOptions]="lineChartOptions"
       ></app-chart>
@@ -43,8 +43,8 @@
       <app-chart
         chartType="line"
         chartName="Efectivo en entidades financieras (en millones de $)"
-        [chartDataset]="lineChartDataset"
-        [chartLabels]="lineChartLabels"
+        [chartDataset]="[]"
+        [chartLabels]="[]"
         [chartColors]="lineChartColors"
         [chartOptions]="lineChartOptions"
       ></app-chart>
@@ -55,8 +55,8 @@
       <app-chart
         chartType="bar"
         chartName="Circulacion monetaria (en millones de $)"
-        [chartDataset]="lineChartDataset"
-        [chartLabels]="lineChartLabels"
+        [chartDataset]="[]"
+        [chartLabels]="[]"
         [chartColors]="lineChartColors"
         [chartOptions]="lineChartOptions"
       ></app-chart>
