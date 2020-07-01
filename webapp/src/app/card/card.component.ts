@@ -10,6 +10,7 @@ export class CardComponent {
   @Input() buyValue: string;
   @Input() sellValue: string;
   @Input() imagePath: string;
+  @Input() updatedOn: string;
 
   constructor() { }
 

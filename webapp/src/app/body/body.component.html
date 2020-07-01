@@ -6,6 +6,7 @@
         [buyValue]="usd.buyValue"
         [sellValue]="usd.sellValue"
         [imagePath]="usd.imagePath"
+        [updatedOn]="lastUpdate"
       ></app-card>
     </div>
   </div>
@@ -14,31 +15,30 @@
     <!--Grid column-->
     <div class="col-lg-6 col-md-6 mb-6">
       <app-chart
-        chartType="line"
+        [chartType]="lineChart"
         chartName="Inflacion anual esperada vs interanual (en %)"
         [chartDataset]="expectedVsInterannualInflationDataset"
         [chartLabels]="expectedVsInterannualInflationLabels"
         [chartColors]="lineChartColors"
-        [chartOptions]="lineChartOptions"
+        [chartOptions]="chartOptions"
       ></app-chart>
     </div>
     <!--Grid column-->
     <!--Grid column-->
     <div class="col-lg-6 col-md-6 mb-6">
       <app-chart
-        chartType="bar"
+        [chartType]="barChart"
         chartName="Diferencia entre inflacion interanual y anual esperada (en %)"
-        [chartDataset]="[]"
-        [chartLabels]="[]"
-        [chartColors]="lineChartColors"
-        [chartOptions]="lineChartOptions"
+        [chartDataset]="inflationDifferenceDataset"
+        [chartLabels]="inflationDifferenceLabels"
+        [chartColors]="barChartColors"
+        [chartOptions]="chartOptions"
       ></app-chart>
     </div>
     <!--Grid column-->
   </div>
-
+<!-- 
   <div class="row wow fadeIn">
-    <!--Grid column-->
     <div class="col-lg-6 col-md-6 mb-6">
       <app-chart
         chartType="line"
@@ -46,11 +46,9 @@
         [chartDataset]="[]"
         [chartLabels]="[]"
         [chartColors]="lineChartColors"
-        [chartOptions]="lineChartOptions"
+        [chartOptions]="chartOptions"
       ></app-chart>
     </div>
-    <!--Grid column-->
-    <!--Grid column-->
     <div class="col-lg-6 col-md-6 mb-6">
       <app-chart
         chartType="bar"
@@ -58,8 +56,7 @@
         [chartDataset]="[]"
         [chartLabels]="[]"
         [chartColors]="lineChartColors"
-        [chartOptions]="lineChartOptions"
+        [chartOptions]="chartOptions"
       ></app-chart>
     </div>
-    <!--Grid column-->
-  </div>
+  </div> -->

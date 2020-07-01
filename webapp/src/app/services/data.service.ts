@@ -12,10 +12,18 @@ export class DataService {
   constructor(private httpClient: HttpClient) { }
 
   public getUsdValues(){
-    return this.httpClient.get(this.ROOT_URL + '/currency/usds')
+    return this.httpClient.get(this.LOCALHOST + '/currency/usds')
   }
 
   public getAnnualExpectedInflation(){
-    return this.httpClient.get(this.ROOT_URL + '/inflation/annualexpected');
+    return this.httpClient.get(this.LOCALHOST + '/inflation/annualexpected');
+  }
+
+  public getInterannualInflation(){
+    return this.httpClient.get(this.LOCALHOST + '/inflation/interannual');
+  }
+
+  public getDifAnnualExpectedVsInterannualInflation(){
+    return this.httpClient.get(this.LOCALHOST + '/inflation/interannualvsexpected');
   }
 }
