@@ -16,6 +16,7 @@ namespace FunctionApp
     {
         [FunctionName("GetMonetaryBase")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "currency/monetarybase")] HttpRequest req, ILogger log)
@@ -30,6 +31,10 @@ namespace FunctionApp
                 var currencyCirculationList = CentralBankObjectResponse.DeserializeJson(result);
 
                 return new OkObjectResult(currencyCirculationList);
+            }
+            catch (ForbiddenException)
+            {
+                return new StatusCodeResult(403);
             }
             catch (NotFoundException)
             {

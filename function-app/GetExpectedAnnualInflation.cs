@@ -6,7 +6,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
-using Newtonsoft.Json;
+using System.Net;
 using FunctionApp.Models;
 using FunctionApp.Services;
 using FunctionApp.Exceptions;
@@ -17,6 +17,7 @@ namespace FunctionApp
     {
         [FunctionName("GetExpectedAnnualInflation")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "inflation/annualexpected")] HttpRequest req, ILogger log)
@@ -31,6 +32,10 @@ namespace FunctionApp
                 var currencyCirculationList = CentralBankObjectResponse.DeserializeJson(result);
 
                 return new OkObjectResult(currencyCirculationList);
+            }
+            catch (ForbiddenException)
+            {
+                return new StatusCodeResult(403);
             }
             catch (NotFoundException)
             {
