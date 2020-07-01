@@ -18,16 +18,18 @@ export class BodyComponent implements OnInit {
   //Charts global variables
   public lineChart: string = 'line';
   public barChart: string = 'bar';
+  public baseChartValues: string[] = ['0','0','0','0','0','0','0','0','0','0'];
+  public baseChartDates: string[] = ['0','0','0','0','0','0','0','0','0','0'];
   public chartOptions: any = {
     responsive: true
   };
 
   //Inflation chart variables
   //First chart
-  public annualExpectedInflationValues: string[] = [];
-  public annualExpectedInflationDates: string[] = [];
-  public interannualInflationValues: string[] = [];
-  public interannualInflationDates: string[] = [];
+  public annualExpectedInflationValues: string[] = this.baseChartValues;
+  public annualExpectedInflationDates: string[] = this.baseChartDates;
+  public interannualInflationValues: string[] = this.baseChartValues;
+  public interannualInflationDates: string[] = this.baseChartDates;
   public expectedVsInterannualInflationDataset: Array<any> = [];
   public expectedVsInterannualInflationLabels: Array<any> = this.annualExpectedInflationDates;
   public lineChartColors: Array<any> = [];
@@ -35,8 +37,8 @@ export class BodyComponent implements OnInit {
   //------------------------
 
   //Second chart
-  public inflationDifferenceValues: string[] = [];
-  public inflationDifferenceDates: string[] = [];
+  public inflationDifferenceValues: string[] = this.baseChartValues;
+  public inflationDifferenceDates: string[] = this.baseChartDates;
   public inflationDifferenceDataset: Array<any> = [];
   public inflationDifferenceLabels: Array<any> = this.inflationDifferenceDates;
   public barChartColors: Array<any> = [
