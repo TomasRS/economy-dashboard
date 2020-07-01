@@ -12,6 +12,7 @@ It's a web application that displays data from the Central Bank of Argentina wit
 ## Solution architecture & decisions
 ![Architecture Diagram](/architecture-tecnology-diagrams/architecture_diagram.jpg?raw=true "Architecture Diagram")
 
+It is integrated with Github Actions to have an automated CI/CD pipeline to build the code and deploy the Azure functions to my personal Azure environment.
+
 ## Tech stack
 ![Architecture Diagram](/architecture-tecnology-diagrams/stack.jpg?raw=true "Stack")
-
