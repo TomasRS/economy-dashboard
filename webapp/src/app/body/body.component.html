@@ -12,51 +12,47 @@
   </div>
 
   <div class="row wow fadeIn">
-    <!--Grid column-->
     <div class="col-lg-6 col-md-6 mb-6">
       <app-chart
         [chartType]="lineChart"
         chartName="Inflacion anual esperada vs interanual (en %)"
         [chartDataset]="expectedVsInterannualInflationDataset"
         [chartLabels]="expectedVsInterannualInflationLabels"
-        [chartColors]="lineChartColors"
+        [chartColors]="expectedVsInterannualChartColors"
         [chartOptions]="chartOptions"
       ></app-chart>
     </div>
-    <!--Grid column-->
-    <!--Grid column-->
     <div class="col-lg-6 col-md-6 mb-6">
       <app-chart
         [chartType]="barChart"
         chartName="Diferencia entre inflacion interanual y anual esperada (en %)"
         [chartDataset]="inflationDifferenceDataset"
         [chartLabels]="inflationDifferenceLabels"
-        [chartColors]="barChartColors"
+        [chartColors]="inflationDifferenceChartColors"
         [chartOptions]="chartOptions"
       ></app-chart>
     </div>
-    <!--Grid column-->
   </div>
-<!-- 
+
   <div class="row wow fadeIn">
     <div class="col-lg-6 col-md-6 mb-6">
       <app-chart
-        chartType="line"
+        [chartType]="lineChart"
         chartName="Efectivo en entidades financieras (en millones de $)"
-        [chartDataset]="[]"
-        [chartLabels]="[]"
-        [chartColors]="lineChartColors"
+        [chartDataset]="cashInFinancialEntitiesDataset"
+        [chartLabels]="cashInFinancialEntitiesLabels"
+        [chartColors]="cashInFinancialEntitiesChartColors"
         [chartOptions]="chartOptions"
       ></app-chart>
     </div>
     <div class="col-lg-6 col-md-6 mb-6">
       <app-chart
-        chartType="bar"
+        [chartType]="barChart"
         chartName="Circulacion monetaria (en millones de $)"
-        [chartDataset]="[]"
-        [chartLabels]="[]"
-        [chartColors]="lineChartColors"
+        [chartDataset]="currencyCirculationValuesDataset"
+        [chartLabels]="currencyCirculationValuesLabels"
+        [chartColors]="currencyCirculationValuesChartColors"
         [chartOptions]="chartOptions"
       ></app-chart>
     </div>
-  </div> -->
+  </div>

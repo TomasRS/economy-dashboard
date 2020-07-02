@@ -18,8 +18,8 @@ export class BodyComponent implements OnInit {
   //Charts global variables
   public lineChart: string = 'line';
   public barChart: string = 'bar';
-  public baseChartValues: string[] = ['0','0','0','0','0','0','0','0','0','0'];
-  public baseChartDates: string[] = ['0','0','0','0','0','0','0','0','0','0'];
+  public baseChartValues: string[] = ['1','1','1','1','1','1','1','1','1','1'];
+  public baseChartDates: string[] = ['1','1','1','1','1','1','1','1','1','1'];
   public chartOptions: any = {
     responsive: true
   };
@@ -30,18 +30,18 @@ export class BodyComponent implements OnInit {
   public annualExpectedInflationDates: string[] = this.baseChartDates;
   public interannualInflationValues: string[] = this.baseChartValues;
   public interannualInflationDates: string[] = this.baseChartDates;
-  public expectedVsInterannualInflationDataset: Array<any> = [];
+  public expectedVsInterannualInflationDataset: Array<any> = [{data: this.interannualInflationValues, label:'Inflacion interanual'}];
   public expectedVsInterannualInflationLabels: Array<any> = this.annualExpectedInflationDates;
-  public lineChartColors: Array<any> = [];
+  public expectedVsInterannualChartColors: Array<any> = [];
 
   //------------------------
 
   //Second chart
   public inflationDifferenceValues: string[] = this.baseChartValues;
   public inflationDifferenceDates: string[] = this.baseChartDates;
-  public inflationDifferenceDataset: Array<any> = [];
+  public inflationDifferenceDataset: Array<any> = [{data: this.inflationDifferenceValues, label:'Inflacion interanual'}];
   public inflationDifferenceLabels: Array<any> = this.inflationDifferenceDates;
-  public barChartColors: Array<any> = [
+  public inflationDifferenceChartColors: Array<any> = [
     {
       backgroundColor: 'rgba(54, 162, 235, 0.2)',
       borderColor: 'rgba(54, 162, 235, 1)',
@@ -50,6 +50,33 @@ export class BodyComponent implements OnInit {
   ];
   //------------------------
 
+  //Third chart
+  public cashInFinancialEntitiesValues: string[] = this.baseChartValues;
+  public cashInFinancialEntitiesDates: string[] = this.baseChartDates;
+  public cashInFinancialEntitiesDataset: Array<any> = [{data: this.cashInFinancialEntitiesValues, label:'Efectivo en entidades financieras'}];
+  public cashInFinancialEntitiesLabels: Array<any> = this.cashInFinancialEntitiesDates;
+  public cashInFinancialEntitiesChartColors: Array<any> = [
+    {
+      backgroundColor: 'rgba(245, 152, 29, 0.75)',
+      borderColor: 'rgba(245, 152, 29, 1)',
+      borderWidth: 2,
+    }
+  ];
+
+  //------------------------
+
+  //Fourth chart
+  public currencyCirculationValues: string[] = this.baseChartValues;
+  public currencyCirculationValuesDates: string[] = this.baseChartDates;
+  public currencyCirculationValuesDataset: Array<any> = [{data: this.currencyCirculationValues, label:'Circulacion monetaria'}];
+  public currencyCirculationValuesLabels: Array<any> = this.currencyCirculationValuesDates;
+  public currencyCirculationValuesChartColors: Array<any> = [
+    {
+      backgroundColor: 'rgba(0, 112, 9, 0.5)',
+      borderColor: 'rgba(0, 112, 9, 1)',
+      borderWidth: 2,
+    }
+  ];
   
   
 
@@ -57,9 +84,9 @@ export class BodyComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUsdValues();
-    this.getAnnualExpectedInflation();
-    this.getInterannualInflation();
-    this.getDifAnnualExpectedAndInterannual();
+    // this.getAnnualExpectedInflation();
+    // this.getInterannualInflation();
+    // this.getDifAnnualExpectedAndInterannual();
   }
 
   public getUsdValues(){
