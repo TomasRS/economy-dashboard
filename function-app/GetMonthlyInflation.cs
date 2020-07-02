@@ -7,7 +7,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
-using Newtonsoft.Json;
 using FunctionApp.Models;
 using FunctionApp.Services;
 using FunctionApp.Exceptions;
