@@ -4,11 +4,11 @@ import { CentralBank } from '../models/centralbank.model';
 import { DataService } from '../services/data.service';
 
 @Component({
-  selector: 'app-body',
-  templateUrl: './body.component.html',
-  styleUrls: ['./body.component.scss']
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
-export class BodyComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   
   //Usds variables
   public mockUsd: DollarType = { name: "Cargando nombre...", buyValue: "Cargando...", sellValue: "Cargando...", imagePath:"../assets/loading-dollar-image-jpg.jpg" };
