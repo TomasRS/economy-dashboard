@@ -1,5 +1,5 @@
-<app-loader></app-loader>
-<!-- <div class="dashboard">
+<app-loader *ngIf="fetchingData"></app-loader>
+<div class="dashboard" *ngIf="!fetchingData">
   <div class="row wow fadeIn">
     <div class="col-md-3" *ngFor="let usd of usds">
       <app-card
@@ -7,7 +7,7 @@
         [buyValue]="usd.buyValue"
         [sellValue]="usd.sellValue"
         [imagePath]="usd.imagePath"
-        [updatedOn]="lastUpdate"
+        [updatedOn]="usdLastUpdate"
       ></app-card>
     </div>
   </div>
@@ -56,4 +56,4 @@
         [chartOptions]="chartOptions"
       ></app-chart>
     </div>
-  </div> -->
+  </div>

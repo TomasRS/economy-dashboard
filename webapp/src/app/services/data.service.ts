@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DollarType } from '../models/dollartype.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class DataService {
   constructor(private httpClient: HttpClient) { }
 
   public getUsdValues(){
-    return this.httpClient.get(this.ROOT_URL + '/currency/usds')
+    return this.httpClient.get(this.ROOT_URL + '/currency/usds');
   }
 
   public getAnnualExpectedInflation(){

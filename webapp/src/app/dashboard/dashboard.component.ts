@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DollarType } from '../models/dollartype.model';
 import { CentralBank } from '../models/centralbank.model';
 import { DataService } from '../services/data.service';
+import { forkJoin } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,10 +12,12 @@ import { DataService } from '../services/data.service';
 })
 export class DashboardComponent implements OnInit {
   
+  fetchingData = true;
+
   //Usds variables
   public mockUsd: DollarType = { name: "Cargando nombre...", buyValue: "Cargando...", sellValue: "Cargando...", imagePath:"../assets/loading-dollar-image-jpg.jpg" };
   public usds: DollarType[] = [this.mockUsd, this.mockUsd, this.mockUsd, this.mockUsd];
-  public lastUpdate: string = "Cargando...";
+  public usdLastUpdate: string = "Cargando...";
 
   //Charts global variables
   public lineChart: string = 'line';
@@ -83,26 +87,28 @@ export class DashboardComponent implements OnInit {
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.getUsdValues();
-    // this.getAnnualExpectedInflation();
-    // this.getInterannualInflation();
-    // this.getDifAnnualExpectedAndInterannual();
-  }
+    let usdsObservable = this.getUsdValues();
+    // let annualInflationObservable = this.getAnnualExpectedInflation();
+    // let interannualInflationObservable = this.getInterannualInflation();
+    // let diffInflationObservable = this.getDifAnnualExpectedAndInterannual();
 
-  public getUsdValues(){
-    this.dataService.getUsdValues().subscribe((data: any[])=>{
-      this.usds = data;
-      this.usds.forEach(usd => usd.buyValue = "$"+usd.buyValue);
-      this.usds.forEach(usd => usd.sellValue = "$"+usd.sellValue);
-      this.usds[0].imagePath = "../assets/100_dolar_bill_compressed.jpg";
-      this.usds[1].imagePath = "../assets/100_dolar_blue_bill_compressed.jpg";
-      this.usds[2].imagePath = "../assets/100_dolar_ccl_bill_compressed.jpg";
-      this.usds[3].imagePath = "../assets/100_dolar_ccl_bill_compressed.jpg";
-      this.lastUpdate = new Date().toLocaleString().split(' ')[0];
+    forkJoin(usdsObservable).subscribe(_ => {
+      //All calls have finished
+      this.fetchingData = false;
     })
   }
 
-  public getAnnualExpectedInflation(){
+  private getUsdValues(){
+    const usdsObservable = this.dataService.getUsdValues().pipe(shareReplay());
+    usdsObservable.subscribe((data: any[]) => {
+      this.usds = data;
+      this.parseUsds();
+      this.usdLastUpdate = new Date().toLocaleDateString().split(' ')[0];
+    });
+    return usdsObservable;
+  }
+
+  private getAnnualExpectedInflation(){
     this.dataService.getAnnualExpectedInflation().subscribe((data: any[])=>{
       let annualExpectedInflations;
       annualExpectedInflations = data;
@@ -118,7 +124,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  public getInterannualInflation(){
+  private getInterannualInflation(){
     this.dataService.getInterannualInflation().subscribe((data: any[])=>{
       let interannualInflations;
       interannualInflations = data;
@@ -132,7 +138,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  public getDifAnnualExpectedAndInterannual(){
+  private getDifAnnualExpectedAndInterannual(){
     this.dataService.getDifAnnualExpectedVsInterannualInflation().subscribe((data: any[])=>{
       let inflationDifference;
       inflationDifference = data;
@@ -160,5 +166,14 @@ export class DashboardComponent implements OnInit {
 
   public mapToListOfValues(list:CentralBank[]){
     return list.map(record => record.value);
+  }
+
+  private parseUsds(){
+    this.usds.forEach(usd => usd.buyValue = "$"+usd.buyValue);
+    this.usds.forEach(usd => usd.sellValue = "$"+usd.sellValue);
+    this.usds[0].imagePath = "../assets/100_dolar_bill_compressed.jpg";
+    this.usds[1].imagePath = "../assets/100_dolar_blue_bill_compressed.jpg";
+    this.usds[2].imagePath = "../assets/100_dolar_ccl_bill_compressed.jpg";
+    this.usds[3].imagePath = "../assets/100_dolar_ccl_bill_compressed.jpg";
   }
 }
