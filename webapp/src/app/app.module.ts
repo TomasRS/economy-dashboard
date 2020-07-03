@@ -13,6 +13,7 @@ import { ChartComponent } from './chart/chart.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import appRoutes from './routerconfig';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import appRoutes from './routerconfig';
     HomeComponent,
     FooterComponent,
     ChartComponent,
-    DashboardComponent
+    DashboardComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

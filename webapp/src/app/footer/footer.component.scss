@@ -1,0 +1,14 @@
+.footer {
+    padding: 1rem;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.homepage-background-gradient{
+    background: rgb(22,230,126);
+    background: -moz-linear-gradient(270deg, rgba(22,230,126,1) 0%, rgba(46,153,250,1) 100%);
+    background: -webkit-linear-gradient(270deg, rgba(22,230,126,1) 0%, rgba(46,153,250,1) 100%);
+    background: linear-gradient(270deg, rgba(22,230,126,1) 0%, rgba(46,153,250,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#16e67e",endColorstr="#2e99fa",GradientType=1);
+}
