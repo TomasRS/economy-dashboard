@@ -6,6 +6,8 @@
 ## What is it?
 It's a web application that displays data from the Central Bank of Argentina with charts and it also shows the USD-ARS market exchange values with cards.
 
+[Check it out!](https://economydashboard.z13.web.core.windows.net/)
+
 [Check out the Trello board](https://trello.com/b/oS1XoqTg/economy-dashboard-app-mvp-1)
 
 
