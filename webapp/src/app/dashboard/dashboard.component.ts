@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DollarType } from '../models/dollartype.model';
 import { CentralBank } from '../models/centralbank.model';
 import { DataService } from '../services/data.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 
 @Component({
@@ -10,9 +10,15 @@ import { shareReplay } from 'rxjs/operators';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   
   fetchingData = true;
+  usdsSubscription: Subscription;
+  annualInflationSubscription: Subscription;
+  interannualInflationSubscription: Subscription;
+  diffInflationSubscription: Subscription;
+  monetaryBaseSubscription: Subscription;
+  forkSubscription: Subscription;
 
   //Usds variables
   public mockUsd: DollarType = { name: "Cargando nombre...", buyValue: "Cargando...", sellValue: "Cargando...", imagePath:"../assets/loading-dollar-image-jpg.jpg" };
@@ -55,11 +61,11 @@ export class DashboardComponent implements OnInit {
   //------------------------
 
   //Third chart
-  public cashInFinancialEntitiesValues: string[] = this.baseChartValues;
-  public cashInFinancialEntitiesDates: string[] = this.baseChartDates;
-  public cashInFinancialEntitiesDataset: Array<any> = [{data: this.cashInFinancialEntitiesValues, label:'Efectivo en entidades financieras'}];
-  public cashInFinancialEntitiesLabels: Array<any> = this.cashInFinancialEntitiesDates;
-  public cashInFinancialEntitiesChartColors: Array<any> = [
+  public monetaryBaseValues: string[] = this.baseChartValues;
+  public monetaryBaseDates: string[] = this.baseChartDates;
+  public monetaryBaseDataset: Array<any> = [{data: this.monetaryBaseValues, label:'Base monetaria'}];
+  public monetaryBaseLabels: Array<any> = this.monetaryBaseDates;
+  public monetaryBaseChartColors: Array<any> = [
     {
       backgroundColor: 'rgba(245, 152, 29, 0.75)',
       borderColor: 'rgba(245, 152, 29, 1)',
@@ -88,19 +94,21 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     let usdsObservable = this.getUsdValues();
-    // let annualInflationObservable = this.getAnnualExpectedInflation();
-    // let interannualInflationObservable = this.getInterannualInflation();
-    // let diffInflationObservable = this.getDifAnnualExpectedAndInterannual();
+    let annualInflationObservable = this.getAnnualExpectedInflation();
+    let interannualInflationObservable = this.getInterannualInflation();
+    let diffInflationObservable = this.getDifAnnualExpectedAndInterannual();
+    let monetaryBaseObservable = this.getMonetaryBase();
 
-    forkJoin(usdsObservable).subscribe(_ => {
+    this.forkSubscription = forkJoin([usdsObservable, annualInflationObservable, interannualInflationObservable, diffInflationObservable, monetaryBaseObservable]).subscribe(_ => {
       //All calls have finished
       this.fetchingData = false;
     })
   }
 
+  //Methods consumig http service
   private getUsdValues(){
     const usdsObservable = this.dataService.getUsdValues().pipe(shareReplay());
-    usdsObservable.subscribe((data: any[]) => {
+    this.usdsSubscription = usdsObservable.subscribe((data: any[]) => {
       this.usds = data;
       this.parseUsds();
       this.usdLastUpdate = new Date().toLocaleDateString().split(' ')[0];
@@ -109,19 +117,18 @@ export class DashboardComponent implements OnInit {
   }
 
   private getAnnualExpectedInflation(){
-    this.dataService.getAnnualExpectedInflation().subscribe((data: any[])=>{
-      let annualExpectedInflations;
-      annualExpectedInflations = data;
-      annualExpectedInflations = this.getLastTenRecords(annualExpectedInflations);
-      this.annualExpectedInflationValues = this.mapToListOfValues(annualExpectedInflations);
-      this.annualExpectedInflationDates = this.mapToListOfDates(annualExpectedInflations);
-    
+    const annualExpectedInflationObservable = this.dataService.getUsdValues().pipe(shareReplay());
+    annualExpectedInflationObservable.subscribe((data: any[]) => {
+      data = this.getLastTenRecords(data);
+      this.annualExpectedInflationValues = this.mapToListOfValues(data);
+      this.annualExpectedInflationDates = this.mapToListOfDates(data);
       this.expectedVsInterannualInflationDataset.push(
         {data: this.annualExpectedInflationValues, label:'Inflacion anual esperada'}
       );
 
       this.expectedVsInterannualInflationLabels = this.annualExpectedInflationDates;
     });
+    return annualExpectedInflationObservable;
   }
 
   private getInterannualInflation(){
@@ -154,6 +161,16 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  private getMonetaryBase(){
+    const monetaryBaseObservable = this.dataService.getUsdValues().pipe(shareReplay());
+    monetaryBaseObservable.subscribe((data: any[]) => {
+      this.usds = data;
+      this.parseUsds();
+      this.usdLastUpdate = new Date().toLocaleDateString().split(' ')[0];
+    });
+    return monetaryBaseObservable;
+  }
+
 
   //Utils methods
   public getLastTenRecords(list:CentralBank[]){
@@ -175,5 +192,14 @@ export class DashboardComponent implements OnInit {
     this.usds[1].imagePath = "../assets/100_dolar_blue_bill_compressed.jpg";
     this.usds[2].imagePath = "../assets/100_dolar_ccl_bill_compressed.jpg";
     this.usds[3].imagePath = "../assets/100_dolar_ccl_bill_compressed.jpg";
+  }
+
+  ngOnDestroy(): void {
+    this.usdsSubscription.unsubscribe();
+    this.annualInflationSubscription.unsubscribe();
+    this.interannualInflationSubscription.unsubscribe();
+    this.diffInflationSubscription.unsubscribe();
+    this.monetaryBaseSubscription.unsubscribe();
+    this.forkSubscription.unsubscribe();
   }
 }

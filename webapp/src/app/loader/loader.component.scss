@@ -1,0 +1,12 @@
+.spinner-border {
+  color: rgb(40, 172, 119);
+}
+
+$loader-width-normal: 10rem;
+$loader-height-normal: 10rem;
+
+.spinner-size{
+    width: $loader-width-normal;
+    height: $loader-height-normal;
+    margin: 10rem;
+}

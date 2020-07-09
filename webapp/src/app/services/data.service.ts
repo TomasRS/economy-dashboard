@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DollarType } from '../models/dollartype.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +25,17 @@ export class DataService {
 
   public getDifAnnualExpectedVsInterannualInflation(){
     return this.httpClient.get(this.LOCALHOST + '/inflation/interannualvsexpected');
+  }
+
+  public getCashInFinancialEntities(){
+    return this.httpClient.get(this.LOCALHOST + '/currency/cashinfinancialentities');
+  }
+
+  public getMonetaryBase(){
+    return this.httpClient.get(this.LOCALHOST + '/currency/monetarybase');
+  }
+
+  public getCurrencyInCirculation(){
+    return this.httpClient.get(this.LOCALHOST + '/currency/circulation');
   }
 }
