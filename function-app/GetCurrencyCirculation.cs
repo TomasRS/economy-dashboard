@@ -6,7 +6,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
-using Newtonsoft.Json;
+using FunctionApp.Utils;
 using FunctionApp.Models;
 using FunctionApp.Services;
 using FunctionApp.Exceptions;
@@ -17,7 +17,6 @@ namespace FunctionApp
     {
         [FunctionName("GetCurrencyCirculation")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "currency/circulation")] HttpRequest req, ILogger log)
@@ -35,7 +34,7 @@ namespace FunctionApp
             }
             catch (ForbiddenException)
             {
-                return new StatusCodeResult(403);
+                return new OkObjectResult(MockCurrencyCirculation.GetMockData());
             }
             catch (NotFoundException)
             {

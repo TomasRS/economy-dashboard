@@ -6,7 +6,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
-using Newtonsoft.Json;
+using FunctionApp.Utils;
 using FunctionApp.Models;
 using FunctionApp.Services;
 using FunctionApp.Exceptions;
@@ -17,25 +17,24 @@ namespace FunctionApp
     {
         [FunctionName("GetInterannualInflation")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "inflation/interannual")] HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
-
+            
             try
             {
                 var httpClientService = new HttpClientService();
                 var result = await httpClientService.SendAsync(HttpMethod.Get, Environment.GetEnvironmentVariable("CentralBankInterannualInflationEndpoint"), true, Environment.GetEnvironmentVariable("CentralBankBcraToken"));
 
-                var currencyCirculationList = CentralBankObjectResponse.DeserializeJson(result);
+                var interannualInflationList = CentralBankObjectResponse.DeserializeJson(result);
 
-                return new OkObjectResult(currencyCirculationList);
+                return new OkObjectResult(interannualInflationList);
             }
             catch (ForbiddenException)
             {
-                return new StatusCodeResult(403);
+                return new OkObjectResult(MockInterannualInflation.GetMockData());
             }
             catch (NotFoundException)
             {
