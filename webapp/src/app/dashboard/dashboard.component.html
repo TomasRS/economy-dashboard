@@ -14,9 +14,9 @@
 
   <div class="row wow fadeIn">
     <div class="col-lg-6 col-md-6 mb-6">
-      <app-chart
+      <app-chart *ngIf="!fetchingData"
         [chartType]="lineChart"
-        chartName="Inflacion anual esperada vs interanual (en %)"
+        chartName="Inflación anual esperada vs interanual (en %)"
         [chartDataset]="expectedVsInterannualInflationDataset"
         [chartLabels]="expectedVsInterannualInflationLabels"
         [chartColors]="expectedVsInterannualChartColors"
@@ -24,9 +24,9 @@
       ></app-chart>
     </div>
     <div class="col-lg-6 col-md-6 mb-6">
-      <app-chart
+      <app-chart *ngIf="!fetchingData"
         [chartType]="barChart"
-        chartName="Diferencia entre inflacion interanual y anual esperada (en %)"
+        chartName="Diferencia entre inflación interanual y anual esperada (en %)"
         [chartDataset]="inflationDifferenceDataset"
         [chartLabels]="inflationDifferenceLabels"
         [chartColors]="inflationDifferenceChartColors"
@@ -37,7 +37,7 @@
 
   <div class="row wow fadeIn">
     <div class="col-lg-6 col-md-6 mb-6">
-      <app-chart
+      <app-chart *ngIf="!fetchingData"
         [chartType]="lineChart"
         chartName="Base monetaria (en millones de $)"
         [chartDataset]="monetaryBaseDataset"
@@ -49,10 +49,10 @@
     <div class="col-lg-6 col-md-6 mb-6">
       <app-chart
         [chartType]="barChart"
-        chartName="Circulacion monetaria (en millones de $)"
-        [chartDataset]="currencyCirculationValuesDataset"
-        [chartLabels]="currencyCirculationValuesLabels"
-        [chartColors]="currencyCirculationValuesChartColors"
+        chartName="Circulación monetaria (en millones de $)"
+        [chartDataset]="currencyCirculationDataset"
+        [chartLabels]="currencyCirculationLabels"
+        [chartColors]="currencyCirculationChartColors"
         [chartOptions]="chartOptions"
       ></app-chart>
     </div>

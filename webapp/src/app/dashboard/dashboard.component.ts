@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DollarType } from '../models/dollartype.model';
 import { CentralBank } from '../models/centralbank.model';
 import { DataService } from '../services/data.service';
-import { forkJoin, Subscription } from 'rxjs';
-import { shareReplay } from 'rxjs/operators';
+import { forkJoin, Subscription, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,12 +12,7 @@ import { shareReplay } from 'rxjs/operators';
 export class DashboardComponent implements OnInit, OnDestroy {
   
   fetchingData = true;
-  usdsSubscription: Subscription;
-  annualInflationSubscription: Subscription;
-  interannualInflationSubscription: Subscription;
-  diffInflationSubscription: Subscription;
-  monetaryBaseSubscription: Subscription;
-  forkSubscription: Subscription;
+  dashboardSubscription: Subscription;
 
   //Usds variables
   public mockUsd: DollarType = { name: "Cargando nombre...", buyValue: "Cargando...", sellValue: "Cargando...", imagePath:"../assets/loading-dollar-image-jpg.jpg" };
@@ -28,29 +22,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
   //Charts global variables
   public lineChart: string = 'line';
   public barChart: string = 'bar';
-  public baseChartValues: string[] = ['1','1','1','1','1','1','1','1','1','1'];
-  public baseChartDates: string[] = ['1','1','1','1','1','1','1','1','1','1'];
   public chartOptions: any = {
     responsive: true
   };
 
   //Inflation chart variables
   //First chart
-  public annualExpectedInflationValues: string[] = this.baseChartValues;
-  public annualExpectedInflationDates: string[] = this.baseChartDates;
-  public interannualInflationValues: string[] = this.baseChartValues;
-  public interannualInflationDates: string[] = this.baseChartDates;
-  public expectedVsInterannualInflationDataset: Array<any> = [{data: this.interannualInflationValues, label:'Inflacion interanual'}];
-  public expectedVsInterannualInflationLabels: Array<any> = this.annualExpectedInflationDates;
+  public expectedVsInterannualInflationDataset: Array<any> = [];
+  public expectedVsInterannualInflationLabels: Array<any> = [];
   public expectedVsInterannualChartColors: Array<any> = [];
 
   //------------------------
 
   //Second chart
-  public inflationDifferenceValues: string[] = this.baseChartValues;
-  public inflationDifferenceDates: string[] = this.baseChartDates;
-  public inflationDifferenceDataset: Array<any> = [{data: this.inflationDifferenceValues, label:'Inflacion interanual'}];
-  public inflationDifferenceLabels: Array<any> = this.inflationDifferenceDates;
+  public inflationDifferenceDataset: Array<any> = [];
+  public inflationDifferenceLabels: Array<any> = [];
   public inflationDifferenceChartColors: Array<any> = [
     {
       backgroundColor: 'rgba(54, 162, 235, 0.2)',
@@ -61,10 +47,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   //------------------------
 
   //Third chart
-  public monetaryBaseValues: string[] = this.baseChartValues;
-  public monetaryBaseDates: string[] = this.baseChartDates;
-  public monetaryBaseDataset: Array<any> = [{data: this.monetaryBaseValues, label:'Base monetaria'}];
-  public monetaryBaseLabels: Array<any> = this.monetaryBaseDates;
+  public monetaryBaseDataset: Array<any> = [];
+  public monetaryBaseLabels: Array<any> = [];
   public monetaryBaseChartColors: Array<any> = [
     {
       backgroundColor: 'rgba(245, 152, 29, 0.75)',
@@ -76,11 +60,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   //------------------------
 
   //Fourth chart
-  public currencyCirculationValues: string[] = this.baseChartValues;
-  public currencyCirculationValuesDates: string[] = this.baseChartDates;
-  public currencyCirculationValuesDataset: Array<any> = [{data: this.currencyCirculationValues, label:'Circulacion monetaria'}];
-  public currencyCirculationValuesLabels: Array<any> = this.currencyCirculationValuesDates;
-  public currencyCirculationValuesChartColors: Array<any> = [
+  public currencyCirculationDataset: Array<any> = [];
+  public currencyCirculationLabels: Array<any> = [];
+  public currencyCirculationChartColors: Array<any> = [
     {
       backgroundColor: 'rgba(0, 112, 9, 0.5)',
       borderColor: 'rgba(0, 112, 9, 1)',
@@ -93,84 +75,57 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
-    let usdsObservable = this.getUsdValues();
-    let annualInflationObservable = this.getAnnualExpectedInflation();
-    let interannualInflationObservable = this.getInterannualInflation();
-    let diffInflationObservable = this.getDifAnnualExpectedAndInterannual();
-    let monetaryBaseObservable = this.getMonetaryBase();
-
-    this.forkSubscription = forkJoin([usdsObservable, annualInflationObservable, interannualInflationObservable, diffInflationObservable, monetaryBaseObservable]).subscribe(_ => {
-      //All calls have finished
-      this.fetchingData = false;
-    })
+    this.dashboardSubscription = this.getData().subscribe(
+      res => {
+        this.handleUsds(res[0]);
+        this.handleDoubleChart(res[1], res[2], this.expectedVsInterannualInflationDataset, this.expectedVsInterannualInflationLabels, 'Inflación anual esperada', 'Inflación interanual');
+        this.handleSingleChart(res[3], this.inflationDifferenceDataset, this.inflationDifferenceLabels, 'Diferencia');
+        this.handleSingleChart(res[4], this.monetaryBaseDataset, this.monetaryBaseLabels, 'Base monetaria');
+        this.handleSingleChart(res[5], this.currencyCirculationDataset, this.currencyCirculationLabels, 'Circulación monetaria');
+        this.fetchingData = false;
+      },
+      err => {
+        console.log(err);
+        this.fetchingData = false;
+      }
+    );
   }
 
-  //Methods consumig http service
-  private getUsdValues(){
-    const usdsObservable = this.dataService.getUsdValues().pipe(shareReplay());
-    this.usdsSubscription = usdsObservable.subscribe((data: any[]) => {
-      this.usds = data;
-      this.parseUsds();
-      this.usdLastUpdate = new Date().toLocaleDateString().split(' ')[0];
-    });
-    return usdsObservable;
+  private getData(): Observable<any> {
+    const usds = this.dataService.getUsdValues();
+    const annualInflation = this.dataService.getAnnualExpectedInflation();
+    const interannualInflation = this.dataService.getInterannualInflation();
+    const diffAnnualVsInterannual = this.dataService.getDifAnnualExpectedVsInterannualInflation();
+    const monetaryBase = this.dataService.getMonetaryBase();
+    const currencyCirculation = this.dataService.getCurrencyInCirculation();
+    return forkJoin([usds, annualInflation, interannualInflation, diffAnnualVsInterannual, monetaryBase, currencyCirculation]);
   }
 
-  private getAnnualExpectedInflation(){
-    const annualExpectedInflationObservable = this.dataService.getUsdValues().pipe(shareReplay());
-    annualExpectedInflationObservable.subscribe((data: any[]) => {
-      data = this.getLastTenRecords(data);
-      this.annualExpectedInflationValues = this.mapToListOfValues(data);
-      this.annualExpectedInflationDates = this.mapToListOfDates(data);
-      this.expectedVsInterannualInflationDataset.push(
-        {data: this.annualExpectedInflationValues, label:'Inflacion anual esperada'}
-      );
-
-      this.expectedVsInterannualInflationLabels = this.annualExpectedInflationDates;
-    });
-    return annualExpectedInflationObservable;
+  //Handle methods (from HTTP response to data displayed)
+  private handleUsds(data){
+    this.usds = data;
+    this.parseUsds();
+    this.usdLastUpdate = new Date().toLocaleDateString().split(' ')[0];
   }
 
-  private getInterannualInflation(){
-    this.dataService.getInterannualInflation().subscribe((data: any[])=>{
-      let interannualInflations;
-      interannualInflations = data;
-      interannualInflations = this.getLastTenRecords(interannualInflations);
-      this.interannualInflationValues = this.mapToListOfValues(interannualInflations);
-      this.interannualInflationDates = this.mapToListOfDates(interannualInflations);
-    
-      this.expectedVsInterannualInflationDataset.push(
-        {data: this.interannualInflationValues, label:'Inflacion interanual'}
-      );
-    });
+  private handleDoubleChart(apiResponseList1, apiResponseList2, dataset, labelList, labelName1, labelName2){
+    apiResponseList1 = this.getLastTenRecords(apiResponseList1);
+    apiResponseList2 = this.getLastTenRecords(apiResponseList2);
+    let valuesFromList1 = this.mapToListOfValues(apiResponseList1);
+    let valuesFromList2 = this.mapToListOfValues(apiResponseList2);
+    let dates = this.mapToListOfDates(apiResponseList1);
+    dataset.push({data: valuesFromList1, label: labelName1});
+    dataset.push({data: valuesFromList2, label: labelName2});
+    dates.forEach(date => labelList.push(date));
   }
 
-  private getDifAnnualExpectedAndInterannual(){
-    this.dataService.getDifAnnualExpectedVsInterannualInflation().subscribe((data: any[])=>{
-      let inflationDifference;
-      inflationDifference = data;
-      inflationDifference = this.getLastTenRecords(inflationDifference);
-      this.inflationDifferenceValues = this.mapToListOfValues(inflationDifference);
-      this.inflationDifferenceDates = this.mapToListOfDates(inflationDifference);
-    
-      this.inflationDifferenceDataset.push(
-        {data: this.interannualInflationValues, label:'Inflacion interanual'}
-      );
-
-      this.inflationDifferenceLabels = this.inflationDifferenceDates;
-    });
+  private handleSingleChart(apiResponseList, dataset, labelList, labelName){
+    apiResponseList = this.getLastTenRecords(apiResponseList);
+    let values = this.mapToListOfValues(apiResponseList);
+    let dates = this.mapToListOfDates(apiResponseList);
+    dataset.push({data: values, label: labelName});
+    dates.forEach(date => labelList.push(date));
   }
-
-  private getMonetaryBase(){
-    const monetaryBaseObservable = this.dataService.getUsdValues().pipe(shareReplay());
-    monetaryBaseObservable.subscribe((data: any[]) => {
-      this.usds = data;
-      this.parseUsds();
-      this.usdLastUpdate = new Date().toLocaleDateString().split(' ')[0];
-    });
-    return monetaryBaseObservable;
-  }
-
 
   //Utils methods
   public getLastTenRecords(list:CentralBank[]){
@@ -195,11 +150,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.usdsSubscription.unsubscribe();
-    this.annualInflationSubscription.unsubscribe();
-    this.interannualInflationSubscription.unsubscribe();
-    this.diffInflationSubscription.unsubscribe();
-    this.monetaryBaseSubscription.unsubscribe();
-    this.forkSubscription.unsubscribe();
+    this.dashboardSubscription.unsubscribe();
   }
 }
