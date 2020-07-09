@@ -16,26 +16,22 @@ export class DataService {
   }
 
   public getAnnualExpectedInflation(){
-    return this.httpClient.get(this.LOCALHOST + '/inflation/annualexpected');
+    return this.httpClient.get(this.ROOT_URL + '/inflation/annualexpected');
   }
 
   public getInterannualInflation(){
-    return this.httpClient.get(this.LOCALHOST + '/inflation/interannual');
+    return this.httpClient.get(this.ROOT_URL + '/inflation/interannual');
   }
 
   public getDifAnnualExpectedVsInterannualInflation(){
-    return this.httpClient.get(this.LOCALHOST + '/inflation/interannualvsexpected');
-  }
-
-  public getCashInFinancialEntities(){
-    return this.httpClient.get(this.LOCALHOST + '/currency/cashinfinancialentities');
+    return this.httpClient.get(this.ROOT_URL + '/inflation/interannualvsexpected');
   }
 
   public getMonetaryBase(){
-    return this.httpClient.get(this.LOCALHOST + '/currency/monetarybase');
+    return this.httpClient.get(this.ROOT_URL + '/currency/monetarybase');
   }
 
   public getCurrencyInCirculation(){
-    return this.httpClient.get(this.LOCALHOST + '/currency/circulation');
+    return this.httpClient.get(this.ROOT_URL + '/currency/circulation');
   }
 }
