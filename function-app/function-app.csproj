@@ -5,6 +5,7 @@
     <RootNamespace>function_app</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="AzureExtensions.Swashbuckle" Version="3.2.2" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
   </ItemGroup>
   <ItemGroup>
