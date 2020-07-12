@@ -26,7 +26,7 @@ namespace FunctionApp
             try
             {
                 var httpClientService = new HttpClientService();
-                var result = await httpClientService.SendAsync(HttpMethod.Get, Environment.GetEnvironmentVariable("DolarSiEndpoint"));
+                var result = await httpClientService.SendAsync<string>(HttpMethod.Get, Environment.GetEnvironmentVariable("DolarSiEndpoint"));
 
                 var currencyCirculationList = Helper.Deserialize(result);
 

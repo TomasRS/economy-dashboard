@@ -8,7 +8,7 @@ namespace FunctionApp.Services
 {
     public class HttpClientService
     {
-        public async Task<string> SendAsync(HttpMethod httpMethod, string uri, bool withAuthorizationBearer = false, string bearer = null)
+        public async Task<string> SendAsync<T>(HttpMethod httpMethod, string uri, bool withAuthorizationBearer = false, string bearer = null)
         {
             var newClient = new HttpClient();
             var newRequest = new HttpRequestMessage(httpMethod, uri);
@@ -31,7 +31,13 @@ namespace FunctionApp.Services
             {
                 throw new NotFoundException();
             }
+        }
 
+        public async Task<HttpResponseMessage> SendAsync(HttpMethod httpMethod, string uri){
+            var client = new HttpClient();
+            var request = new HttpRequestMessage(httpMethod, uri);
+            var response = await client.SendAsync(request);
+            return response;
         }
     }
 }

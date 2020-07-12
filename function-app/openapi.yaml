@@ -1,0 +1,198 @@
+openapi: 3.0.1
+info:
+  title: Economy Dashboard API
+  description: This API provides endpoints to retrieve data for the different USD-ARS
+    exchange values and information from the Central Bank of Argentina.
+  version: "1.0"
+externalDocs:
+  description: Check out the GitHub repository
+  url: https://github.com/TomasRS/economy-dashboard
+servers:
+- url: https://dashboardsargentina.azurewebsites.net/api
+tags:
+- name: Currency
+  description: Usds, monetary base, currency in circulation
+- name: Inflation
+  description: Annual expected, interannual, difference
+paths:
+  /currency/usds:
+    get:
+      tags:
+      - Currency
+      summary: List of USD-ARS exchange values
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usd'
+        404:
+          description: Not found
+          content: {}
+  /currency/monetarybase:
+    get:
+      tags:
+      - Currency
+      summary: List of date-value for monetary base in millions of ARS
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MonetaryBase'
+        404:
+          description: Not found
+          content: {}
+  /currency/circulation:
+    get:
+      tags:
+      - Currency
+      summary: List of date-value for currency circulation in millions of ARS
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CurrencyCirculation'
+        404:
+          description: Not found
+          content: {}
+  /inflation/annualexpected:
+    get:
+      tags:
+      - Inflation
+      summary: List of annual expected inflation in % for each month
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnnualExpectedInflation'
+        404:
+          description: Not found
+          content: {}
+  /inflation/interannual:
+    get:
+      tags:
+      - Inflation
+      summary: List of interannual inflation in % for each month
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InterannualInflation'
+        404:
+          description: Not found
+          content: {}
+  /inflation/interannualvsexpected:
+    get:
+      tags:
+      - Inflation
+      summary: List of difference between interannual and annual expected inflation
+        in % for each month
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DifferenceInflation'
+        404:
+          description: Not found
+          content: {}
+components:
+  schemas:
+    Usd:
+      required:
+      - buyValue
+      - name
+      - sellValue
+      type: object
+      properties:
+        name:
+          type: string
+          example: Dolar oficial
+        buyValue:
+          type: string
+          example: 69,71
+        sellValue:
+          type: string
+          example: 74,71
+    MonetaryBase:
+      required:
+      - date
+      - value
+      type: object
+      properties:
+        date:
+          type: string
+          example: 2020-02-26
+        value:
+          type: string
+          example: "1807042"
+    CurrencyCirculation:
+      required:
+      - date
+      - value
+      type: object
+      properties:
+        date:
+          type: string
+          example: 2020-02-26
+        value:
+          type: string
+          example: "1807042"
+    AnnualExpectedInflation:
+      required:
+      - date
+      - value
+      type: object
+      properties:
+        date:
+          type: string
+          example: 2020-01-31
+        value:
+          type: string
+          example: "40"
+    InterannualInflation:
+      required:
+      - date
+      - value
+      type: object
+      properties:
+        date:
+          type: string
+          example: 2020-01-31
+        value:
+          type: string
+          example: "52.9"
+    DifferenceInflation:
+      required:
+      - date
+      - value
+      type: object
+      properties:
+        date:
+          type: string
+          example: 2020-01-31
+        value:
+          type: string
+          example: "12.9"

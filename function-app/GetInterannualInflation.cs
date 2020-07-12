@@ -26,7 +26,7 @@ namespace FunctionApp
             try
             {
                 var httpClientService = new HttpClientService();
-                var result = await httpClientService.SendAsync(HttpMethod.Get, Environment.GetEnvironmentVariable("CentralBankInterannualInflationEndpoint"), true, Environment.GetEnvironmentVariable("CentralBankBcraToken"));
+                var result = await httpClientService.SendAsync<string>(HttpMethod.Get, Environment.GetEnvironmentVariable("CentralBankInterannualInflationEndpoint"), true, Environment.GetEnvironmentVariable("CentralBankBcraToken"));
 
                 var interannualInflationList = CentralBankObjectResponse.DeserializeJson(result);
 
