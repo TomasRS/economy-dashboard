@@ -1,0 +1,191 @@
+swagger: "2.0"
+info:
+  description: "This API provides endpoints to retrieve data for the different USD-ARS exchange values and information from the Central Bank of Argentina."
+  version: "1.0.0"
+  title: "Economy Dashboard API"
+host: "dashboardsargentina.azurewebsites.net"
+basePath: "/api"
+tags:
+- name: "Currency"
+  description: "Usds, monetary base, currency in circulation"
+- name: "Inflation"
+  description: "Annual expected, interannual, difference"
+schemes:
+- "https"
+paths:
+  /currency/usds:
+    get:
+      tags:
+      - "Currency"
+      summary: "List of USD-ARS exchange values"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Usd"
+        "404":
+          description: "Not found"
+  /currency/monetarybase:
+    get:
+      tags:
+      - "Currency"
+      summary: "List of date-value for monetary base in millions of ARS"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/MonetaryBase"
+        "404":
+          description: "Not found"
+  /currency/circulation:
+    get:
+      tags:
+      - "Currency"
+      summary: "List of date-value for currency circulation in millions of ARS"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/CurrencyCirculation"
+        "404":
+          description: "Not found"
+  /inflation/annualexpected:
+    get:
+      tags:
+      - "Inflation"
+      summary: "List of annual expected inflation in % for each month"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/AnnualExpectedInflation"
+        "404":
+          description: "Not found"
+  /inflation/interannual:
+    get:
+      tags:
+      - "Inflation"
+      summary: "List of interannual inflation in % for each month"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InterannualInflation"
+        "404":
+          description: "Not found"
+  /inflation/interannualvsexpected:
+    get:
+      tags:
+      - "Inflation"
+      summary: "List of difference between interannual and annual expected inflation in % for each month"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/DifferenceInflation"
+        "404":
+          description: "Not found"
+definitions:
+  Usd:
+    type: "object"
+    required:
+    - "name"
+    - "buyValue"
+    - "sellValue"
+    properties:
+      name:
+        type: "string"
+        example: "Dolar oficial"
+      buyValue:
+        type: "string"
+        example: "69,71"
+      sellValue:
+        type: "string"
+        example: "74,71"
+  MonetaryBase:
+    type: "object"
+    required:
+    - "date"
+    - "value"
+    properties:
+      date:
+        type: "string"
+        example: "2020-02-26"
+      value:
+        type: "string"
+        example: "1807042"
+  CurrencyCirculation:
+    type: "object"
+    required:
+    - "date"
+    - "value"
+    properties:
+      date:
+        type: "string"
+        example: "2020-02-26"
+      value:
+        type: "string"
+        example: "1807042"
+  AnnualExpectedInflation:
+    type: "object"
+    required:
+    - "date"
+    - "value"
+    properties:
+      date:
+        type: "string"
+        example: "2020-01-31"
+      value:
+        type: "string"
+        example: "40"
+  InterannualInflation:
+    type: "object"
+    required:
+    - "date"
+    - "value"
+    properties:
+      date:
+        type: "string"
+        example: "2020-01-31"
+      value:
+        type: "string"
+        example: "52.9"
+  DifferenceInflation:
+    type: "object"
+    required:
+    - "date"
+    - "value"
+    properties:
+      date:
+        type: "string"
+        example: "2020-01-31"
+      value:
+        type: "string"
+        example: "12.9"
+externalDocs:
+  description: "Check out the GitHub repository"
+  url: "https://github.com/TomasRS/economy-dashboard"
