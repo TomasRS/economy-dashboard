@@ -6,11 +6,16 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#16e67e",endColorstr="#2e99fa",GradientType=1);
     border-radius: 0;
 }
-
+mdb-card{
+    align-items: center;
+}
 .card{
     box-shadow: none;
 }
 
 .full-height{
-    height: calc(100vh);
+    height: calc(88vh);
+}
+.main-content{
+    max-width: 50rem;
 }
