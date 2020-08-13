@@ -23,7 +23,7 @@ jobs:
 
 # Build Angular webapp, it runs in parallel from previous build
   build-angular-webapp:
-    name: Build Angular app
+    name: Build & Deploy Frontend
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -48,10 +48,18 @@ jobs:
         run: |
           npm i
           npm run build --prod
+      
+      - name: 'Deploy to Azure Static Website'   
+        uses: tibor19/static-website-deploy@v1
+        with:
+          enabled-static-website: 'true'
+          folder: './webapp/dist/webapp'
+          remove-existing-files: 'true'
+          connection-string: ${{ secrets.ECONOMYDASHBOARD_STACC_CONNECTION_STRING }}
 
 # Build and deploy Azure Functions to Azure
   build-and-deploy:
-    name: Build .NET project & deploy Azure Functions
+    name: Build & Deploy Backend
     needs: build-angular-webapp
     runs-on: windows-latest
     steps:
