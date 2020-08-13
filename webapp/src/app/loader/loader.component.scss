@@ -10,3 +10,8 @@ $loader-height-normal: 10rem;
     height: $loader-height-normal;
     margin: 10rem;
 }
+
+.full-height{
+  height: calc(92vh);
+  align-items: center;
+}

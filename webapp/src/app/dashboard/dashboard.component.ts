@@ -15,7 +15,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dashboardSubscription: Subscription;
 
   //Usds variables
-  public mockUsd: DollarType = { name: "Cargando nombre...", buyValue: "Cargando...", sellValue: "Cargando...", imagePath:"../assets/loading-dollar-image-jpg.jpg" };
+  public mockUsd: DollarType = { name: "Cargando nombre...", buyValue: "Cargando...", sellValue: "Cargando...", imagePath:"../assets/loading-dollar-image.jpg" };
   public usds: DollarType[] = [this.mockUsd, this.mockUsd, this.mockUsd, this.mockUsd];
   public usdLastUpdate: string = "Cargando...";
 
