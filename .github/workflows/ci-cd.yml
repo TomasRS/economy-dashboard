@@ -48,6 +48,12 @@ jobs:
         run: |
           npm i
           npm run build --prod
+          
+      - uses: tibor19/static-website-deploy@v1
+        with:
+          enabled-static-website: 'true'
+          folder: './webapp/dist/webapp'
+          connection-string: ${{ secrets.ECONOMYDASHBOARD_STACC_CONNECTION_STRING }}
 
 # Build and deploy Azure Functions to Azure
   build-and-deploy:
