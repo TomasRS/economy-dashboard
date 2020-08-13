@@ -48,8 +48,9 @@ jobs:
         run: |
           npm i
           npm run build --prod
-          
-      - uses: tibor19/static-website-deploy@v1
+      
+      - name: 'Deploy to Azure Static Website'   
+        uses: tibor19/static-website-deploy@v1
         with:
           enabled-static-website: 'true'
           folder: './webapp/dist/webapp'
