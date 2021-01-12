@@ -1,0 +1,20 @@
+{  
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "FUNCTIONS_EXTENSION_VERSION": "~3",
+
+    "DolarSiEndpoint": "https://www.dolarsi.com/api/api.php?type=valoresprincipales",
+    "OpenApiDocEndpoint": "https://dashboardsargentina.blob.core.windows.net/openapi/openapi.json",
+    "CentralBankToken": "--SECRET--",
+    "CentralBankDomain": "https://api.estadisticasbcra.com/",
+    "CentralBankCashInFinancialEntitiesEndpoint": "efectivo_en_ent_fin",
+    "CentralBankCurrencyCirculationEndpoint": "circulacion_monetaria",
+    "CentralBankExpectedAnnualInflationEndpoint": "inflacion_esperada_oficial",
+    "CentralBankInterannualInflationEndpoint": "inflacion_interanual_oficial",
+    "CentralBankInterannualVsExpectedInflationEndpoint": "dif_inflacion_esperada_vs_interanual",
+    "CentralBankMonetaryBaseEndpoint": "base",
+    "CentralBankMonthlyInflationEndpoint": "inflacion_mensual_oficial"
+  }
+}

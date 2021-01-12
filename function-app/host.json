@@ -1,10 +1,17 @@
 {
     "version": "2.0",
-    "logging": {
-        "applicationInsights": {
-            "samplingExcludedTypes": "Request",
-            "samplingSettings": {
-                "isEnabled": true
+    "extensions": {
+        "http": {
+            "routePrefix": "",
+            "maxOutstandingRequests": 100,
+            "maxConcurrentRequests": 5,
+            "dynamicThrottlesEnabled": true,
+            "hsts": {
+                "isEnabled": true,
+                "maxAge": "10"
+            },
+            "customHeaders": {
+                "X-Content-Type-Options": "nosniff"
             }
         }
     }

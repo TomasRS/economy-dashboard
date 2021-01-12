@@ -26,7 +26,9 @@ namespace FunctionApp
             try
             {
                 var httpClientService = new HttpClientService();
-                var result = await httpClientService.SendAsync<string>(HttpMethod.Get, Environment.GetEnvironmentVariable("CentralBankExpectedAnnualInflationEndpoint"), true, Environment.GetEnvironmentVariable("CentralBankBcraToken"));
+                var token = Environment.GetEnvironmentVariable("CentralBankToken");
+                var endpointUrl = $"{Environment.GetEnvironmentVariable("CentralBankDomain")}{Environment.GetEnvironmentVariable("CentralBankExpectedAnnualInflationEndpoint")}";
+                var result = await httpClientService.SendAsync<string>(HttpMethod.Get, endpointUrl, true, token);
 
                 var annualExpectedInflationList = CentralBankObjectResponse.DeserializeJson(result);
 
