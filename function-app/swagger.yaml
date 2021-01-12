@@ -3,7 +3,7 @@ info:
   description: "This API provides endpoints to retrieve data for the different USD-ARS exchange values and information from the Central Bank of Argentina."
   version: "1.0.0"
   title: "Economy Dashboard API"
-host: "dashboardsargentina.azurewebsites.net"
+host: "https://api.dashboard.tomasrs.dev"
 basePath: "/api"
 tags:
 - name: "Currency"

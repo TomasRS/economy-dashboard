@@ -6,8 +6,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DataService {
   
-  private readonly ROOT_URL="https://dashboardsargentina.azurewebsites.net/api";
-  private readonly LOCALHOST="http://localhost:7071/api";
+  private readonly ROOT_URL="https://api.dashboard.tomasrs.dev";
+  private readonly LOCALHOST="http://localhost:7071";
   
   constructor(private httpClient: HttpClient) { }
 

@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://dashboardsargentina.azurewebsites.net/api"
+      "url": "https://api.dashboard.tomasrs.dev"
     }
   ],
   "tags": [

@@ -8,7 +8,7 @@ externalDocs:
   description: Check out the GitHub repository
   url: https://github.com/TomasRS/economy-dashboard
 servers:
-- url: https://dashboardsargentina.azurewebsites.net/api
+- url: https://api.dashboard.tomasrs.dev
 tags:
 - name: Currency
   description: Usds, monetary base, currency in circulation
