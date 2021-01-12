@@ -4,6 +4,7 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "FUNCTIONS_EXTENSION_VERSION": "~3",
+    "WEBSITE_MAX_DYNAMIC_APPLICATION_SCALE_OUT": 1,
 
     "DolarSiEndpoint": "https://www.dolarsi.com/api/api.php?type=valoresprincipales",
     "OpenApiDocEndpoint": "https://dashboardsargentina.blob.core.windows.net/openapi/openapi.json",

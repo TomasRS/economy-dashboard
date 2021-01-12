@@ -3,7 +3,7 @@
     "extensions": {
         "http": {
             "routePrefix": "",
-            "maxOutstandingRequests": 100,
+            "maxOutstandingRequests": 200,
             "maxConcurrentRequests": 5,
             "dynamicThrottlesEnabled": true,
             "hsts": {
