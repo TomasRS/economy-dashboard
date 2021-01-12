@@ -8,7 +8,7 @@ It's a web application that displays data from the Central Bank of Argentina wit
 
 [Check it out!](https://dashboard.tomasrs.dev)
 
-[Check out API documentation](https://api.dashboard.tomasrs.dev/swagger)
+[Check out API documentation](https://dashboardsargentina.azurewebsites.net/api/swagger)
 
 [Check out the Trello board](https://trello.com/b/oS1XoqTg/economy-dashboard-app-mvp-1)
 
