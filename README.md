@@ -1,6 +1,6 @@
 # Economy Dashboard
 ![CI/CD to Azure](https://github.com/TomasRS/economy-dashboard/workflows/CI/CD%20to%20Azure/badge.svg)
-![.NET Core Version](https://img.shields.io/badge/.NET%20Core-v3.1-blue)
+![.NET Core Version](https://img.shields.io/badge/.NET%20Core-3.1-blue)
 ![Angular Version](https://img.shields.io/badge/Angular-9.1.9-red)
 
 ## What is it?
